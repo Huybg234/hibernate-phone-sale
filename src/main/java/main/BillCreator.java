@@ -2,7 +2,11 @@ package main;
 
 import billTable.Bill;
 import billTable.ClientBill;
+import entity.BillEntity;
+import entity.Client;
+import entity.NewBillEntity;
 import entity.Phone;
+import repository.BillDAO;
 import util.ObjectUtil;
 
 import java.util.ArrayList;
@@ -20,26 +24,33 @@ public class BillCreator {
             return;
         }
         List<Bill> tmpBill = new ArrayList<>();
+        List<BillEntity> billEntities = new ArrayList<>();
+//        List<NewBillEntity> newBillEntities = new ArrayList<>();
         for (int i = 0; i < MainRun.clients.size(); i++) {
-            String clientName = MainRun.clients.get(i).getName();
+            Client client = MainRun.clients.get(i);
+            String clientName = client.getName();
             System.out.println("-------Thống kê hóa đơn cho khách hàng " + clientName + "------");
-            System.out.println("Nhập số loại điện thoại khách hàng muốn mua: ");
-            int typePhoneNumber = inputTypePhoneNumber();
-            if (typePhoneNumber == 0) {
+            System.out.println("Nhập số điện thoại khách hàng muốn mua: ");
+            int phoneQuantity = inputPhoneQuantity();
+            if (phoneQuantity == 0) {
                 continue;
             }
             List<ClientBill> clientBills = new ArrayList<>();
-            for (int j = 0; j < typePhoneNumber; j++) {
+            for (int j = 0; j < phoneQuantity; j++) {
                 System.out.println("Nhập id loại điện thoại thứ " + (j + 1) + " mà khách hàng " + clientName + " muốn mua: ");
                 Phone phone = inputPhoneID();
                 System.out.println("Nhập số lượng điện thoại loại này muốn mua: ");
-                int buyPhoneNumber = inputBuyPhoneNumber();
-                clientBills.add(new ClientBill(phone,buyPhoneNumber));
+                int amount = inputBuyPhoneNumber();
+                clientBills.add(new ClientBill(phone, amount));
+                billEntities.add(new BillEntity(client.getId(), phone.getId(), amount));
+//                newBillEntities.add(new NewBillEntity(client, phone, amount));
             }
-            Bill bill = new Bill(MainRun.clients.get(i),clientBills);
+            Bill bill = new Bill(client, clientBills);
             tmpBill.add(bill);
-            MainRun.bills.add(bill);
         }
+        MainRun.bills.addAll(tmpBill);
+        MainRun.billDAO.addNewBill(billEntities);
+//        MainRun.billDAO.addNewBill(newBillEntities);
     }
 
     private int inputBuyPhoneNumber() {
@@ -64,7 +75,7 @@ public class BillCreator {
 
     private Phone inputPhoneID() {
         int phoneId = 0;
-        boolean isValidPhoneId = true;
+        boolean isValidPhoneId = false;
         do {
             try {
                 phoneId = new Scanner(System.in).nextInt();
@@ -78,7 +89,9 @@ public class BillCreator {
             if (ObjectUtil.isEmpty(phone)) {
                 System.out.print("Không có id loại điện thoại vừa nhập! Nhập lại: ");
                 isValidPhoneId = false;
-            } else return phone;
+                continue;
+            }
+            return phone;
         } while (!isValidPhoneId);
         return null;
     }
@@ -93,24 +106,25 @@ public class BillCreator {
         return null;
     }
 
-    private int inputTypePhoneNumber() {
-        boolean isValidTypePhoneNumber = true;
-        int typePhoneNumber = 0;
+    private int inputPhoneQuantity() {
+        boolean isValidPhoneQuantity = true;
+        int phoneQuantity = 0;
         do {
             try {
-                typePhoneNumber = new Scanner(System.in).nextInt();
-                isValidTypePhoneNumber = true;
+                phoneQuantity = new Scanner(System.in).nextInt();
+                isValidPhoneQuantity = true;
             } catch (Exception e) {
                 System.out.println("Không được nhập ký tự khác ngoài số! Nhập lại: ");
-                isValidTypePhoneNumber = false;
+                isValidPhoneQuantity = false;
                 continue;
             }
-            if (typePhoneNumber < 0 || typePhoneNumber > MainRun.phones.size()) {
+            if (phoneQuantity < 0 || phoneQuantity > MainRun.phones.size()) {
                 System.out.print("Số điện thoại muốn mua phải lớn hơn 0 và nhỏ hơn tổng số điện thoại! Nhập lại: ");
-                isValidTypePhoneNumber = false;
+                isValidPhoneQuantity = false;
             }
 
-        } while (!isValidTypePhoneNumber);
-        return typePhoneNumber;
+        } while (!isValidPhoneQuantity);
+        return phoneQuantity;
     }
+
 }

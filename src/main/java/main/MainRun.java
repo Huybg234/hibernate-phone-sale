@@ -3,8 +3,7 @@ package main;
 import billTable.Bill;
 import entity.Client;
 import entity.Phone;
-import repository.ClientDAOImp;
-import repository.PhoneDAOImp;
+import repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +14,13 @@ public class MainRun {
     public static List<Phone> phones = new ArrayList<>();
     public static List<Bill> bills = new ArrayList<>();
 
-    public static final ClientDAOImp clientDAO = new ClientDAOImp();
-    public static final PhoneDAOImp phoneDAO = new PhoneDAOImp();
+    public static final ClientDAO clientDAO = new ClientDAOImp();
+    public static final PhoneDAO phoneDAO = new PhoneDAOImp();
+    public static final BillDAO billDAO = new BillDAOImp();
 
     private static final ClientCreator clientCreator = new ClientCreator();
     private static final PhoneCreator phoneCreator = new PhoneCreator();
+    private static final BillCreator billCreator = new BillCreator();
 
     public static void main(String[] args) {
         menu();
@@ -37,6 +38,15 @@ public class MainRun {
                     createNewPhone();
                     printPhone();
                     break;
+                case 3:
+                    createOrder();
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    System.exit(0);
             }
         } while (true);
     }
@@ -83,4 +93,9 @@ public class MainRun {
     public static void printPhone() {
         phones.forEach(System.out::println);
     }
+
+    private static void createOrder() {
+        billCreator.createBillTable();
+    }
+
 }

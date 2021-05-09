@@ -19,7 +19,8 @@ public class ClientDAOImp implements ClientDAO {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().commit();
+            session.getTransaction().rollback();
         }
     }
+
 }

@@ -19,7 +19,7 @@ public class PhoneDAOImp implements PhoneDAO {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().commit();
+            session.getTransaction().rollback();
         }
     }
 }

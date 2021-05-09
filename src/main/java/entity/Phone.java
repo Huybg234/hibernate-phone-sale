@@ -1,23 +1,25 @@
 package entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Scanner;
 
 @Entity
 @Table(name = "phone")
-
 public class Phone {
     @Id
-    @Column(name = "id")
-    private int id = 10000;
+    @Column
+    private int id;
 
-    @Column(name = "manufacturer", nullable = false)
+    @Column(nullable = false)
     private String manufacturer;
 
-    @Column(name = "model", nullable = false)
+    @Column(nullable = false)
     private String model;
 
-    @Column(name = "cost", nullable = false)
+    @Column(nullable = false)
     private float cost;
 
     private static int AUTO_ID = 10000;
@@ -86,4 +88,5 @@ public class Phone {
                 ", cost=" + cost +
                 '}';
     }
+
 }

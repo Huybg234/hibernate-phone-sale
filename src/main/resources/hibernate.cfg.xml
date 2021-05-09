@@ -18,5 +18,7 @@
 
         <mapping class="entity.Client"/>
         <mapping class="entity.Phone"/>
+<!--        <mapping class="entity.BillEntity"/>-->
+        <mapping class="entity.NewBillEntity"/>
     </session-factory>
 </hibernate-configuration>

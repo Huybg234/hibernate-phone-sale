@@ -6,12 +6,11 @@ import java.util.Scanner;
 
 @Entity
 @Table(name = "client")
-
 public class Client implements Serializable {
 
     @Id
     @Column(name = "id")
-    private int id = 10000;
+    private int id;
 
     @Column(name = "client_group", nullable = false)
     private String clientGroup;

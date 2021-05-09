@@ -1,10 +1,11 @@
 package repository;
 
-import billTable.Bill;
-import entity.Client;
+import entity.BillEntity;
 
 import java.util.List;
 
 public interface BillDAO {
-    void addNewBill(List<Bill> bills);
+
+    void addNewBill(List<BillEntity> bills);
+
 }

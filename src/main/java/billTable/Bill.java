@@ -8,9 +8,6 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "bill")
-
 public class Bill {
 
     private Client client;
